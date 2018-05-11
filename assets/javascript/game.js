@@ -1,3 +1,4 @@
+// ========================================================================
 // VARIABLES AND ARRAYS
 // ========================================================================
 var wins = 0;
@@ -17,52 +18,62 @@ var wordBank = [
 ];
 var guessedLetter = [];
 var correctGuess = [];
+var wordSelection = [];
 
+// ========================================================================
 // FUNCTIONS
+// ========================================================================
+
+function wordChoice() { 
+    return wordBank[Math.floor(Math.random() * wordBank.length)];
+    // doesn't seem to be saving the random value to either wordChoice or wordSelection. Tested with console.log()
+    wordSelection.push(wordChoice)
+};
+
+var isAlpha = function(userGuess){
+    return /^[A-Z]$/i.test(userGuess);
+};
+
+var gameStart = function () {
+    guessedLetter = [];
+    correctGuess = [];
+    correctGuess = [];
+    guesses = 6;
+    document.getElementById('word').innerHTML = wordSelection;
+    document.getElementById('guesses').innerHTML = guesses;
+};
+
+var gameOver = function () {
+    losses++;
+    alert('Game Over');
+    gameStart();
+}
+
+var winner = function () {
+    wins++;
+    alert('You Win!');
+    gameStart();
+}
+// seems to be in a constant cycle of the gameStart()
+gameStart();
+
+// ========================================================================
+// GAME RULES
 // ========================================================================
 
 document.onkeyup = function(event) {
     
     var userGuess = event.key.toLowerCase();
 
-    var wordChoice = function() {
-        return wordBank[Math.floor(Math.random() * wordBank.length)];
-    };
-
-    var isAlpha = function(userGuess){
-        return /^[A-Z]$/i.test(userGuess);
-    };
-    
-    var gameStart = function () {
-        guessedLetter = [];
-        correctGuess = [];
-        correctGuess = [];
-        guesses = 6;
-        document.getElementById('word').innerHTML = wordChoice();
-        document.getElementById('guesses').innerHTML = guesses;
-    };
-
-    var gameOver = function () {
-        losses++;
-        alert('Game Over');
-        gameStart();
-    }
-
-    var winner = function () {
-        wins++;
-        alert('You Win!');
-        gameStart();
-    }
-
     var theGameIsAfoot = function () {
         if (isAlpha === true) {
-            var guessIndex = wordChoice.indexof(userGuess);
+            var guessIndex = wordSelection.indexof(userGuess);
                 while (guessIndex != -1); {
                     correctGuess.push(guessIndex);
-                    guessIndex = wordChoice.indexof(userGuess, guesIndex + 1);
+                    guessIndex = wordSelection.indexof(userGuess, guesIndex + 1);
                 }
                 // reveal the letter in the correct index
-                if (correctGuess.length == wordChoice.length) {
+                if (correctGuess.length == wordSelection.length) {
                     winner();
                 }
                 if (guessedIndex === -1) {
@@ -86,15 +97,15 @@ document.onkeyup = function(event) {
             alert("Please enter a letter.")
         }
     };
-    
-    gameStart();
 
     var html = 
         '<p> Wins: ' + wins + '</p>' +
         '<p> Losses: ' + losses + '</p>';
 
     document.querySelector('#game').innerHTML = html;
+    // not working with wordSelection
+    // for some reason it'll print out the randomly selected name, with wordChoice but console.log() shows that nothing was saved
     document.querySelector('#word').innerHTML = wordChoice();
-    document.querySelector('#guesses').innerHTML = guesedLetter;
+    document.querySelector('#guesses').innerHTML = guessedLetter;
     document.querySelector('#remaining_guesses').innerHTML = guesses;
 };
