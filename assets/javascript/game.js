@@ -1,3 +1,5 @@
+// VARIABLES AND ARRAYS
+// ========================================================================
 var wins = 0;
 var losses = 0;
 var guesses = 6;
@@ -16,6 +18,9 @@ var wordBank = [
 var guessedLetter = [];
 var correctGuess = [];
 
+// FUNCTIONS
+// ========================================================================
+
 document.onkeyup = function(event) {
     
     var userGuess = event.key.toLowerCase();
@@ -29,20 +34,36 @@ document.onkeyup = function(event) {
     };
     
     var gameStart = function () {
-        document.getElementById('word').innerHTML = wordChoice();
-        guesses = 6;
-        document.getElementById('guesses').innerHTML = guesses;
         guessedLetter = [];
         correctGuess = [];
+        correctGuess = [];
+        guesses = 6;
+        document.getElementById('word').innerHTML = wordChoice();
+        document.getElementById('guesses').innerHTML = guesses;
     };
 
-    var theGameIsAfoot = function () {
+    var gameOver = function () {
+        losses++;
+        alert('Game Over');
         gameStart();
+    }
+
+    var winner = function () {
+        wins++;
+        alert('You Win!');
+        gameStart();
+    }
+
+    var theGameIsAfoot = function () {
         if (isAlpha === true) {
             var guessIndex = wordChoice.indexof(userGuess);
                 while (guessIndex != -1); {
                     correctGuess.push(guessIndex);
                     guessIndex = wordChoice.indexof(userGuess, guesIndex + 1);
+                }
+                // reveal the letter in the correct index
+                if (correctGuess.length == wordChoice.length) {
+                    winner();
                 }
                 if (guessedIndex === -1) {
                     if (guessedLetter.indexof(userGuess) != -1) {
@@ -52,7 +73,7 @@ document.onkeyup = function(event) {
                         }
                         else if (guesses === 1) {
                             guesses--;
-                            // game over state
+                            gameOver();
                         }
                     }
                 }
@@ -65,6 +86,8 @@ document.onkeyup = function(event) {
             alert("Please enter a letter.")
         }
     };
+    
+    gameStart();
 
     var html = 
         '<p> Wins: ' + wins + '</p>' +
@@ -72,6 +95,6 @@ document.onkeyup = function(event) {
 
     document.querySelector('#game').innerHTML = html;
     document.querySelector('#word').innerHTML = wordChoice();
-    document.querySelector('#guesses').innerHTML = // user guess if isAlpha;
+    document.querySelector('#guesses').innerHTML = guesedLetter;
     document.querySelector('#remaining_guesses').innerHTML = guesses;
 };
